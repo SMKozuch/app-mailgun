@@ -20,7 +20,7 @@ url = cfg.get_parameters()['url']
 
 try:
     delivery_time = cfg.get_parameters()['delivery_time']
-except NameError:
+except KeyError:
     delivery_time = '09:00:00 +0000'
 
 logging.info('Parameters fetched successfully')
