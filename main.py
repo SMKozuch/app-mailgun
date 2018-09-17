@@ -18,10 +18,9 @@ subject = cfg.get_parameters()['subject']
 html_name = cfg.get_parameters()['html_body']
 url = cfg.get_parameters()['url']
 
-try:
-    delivery_time = cfg.get_parameters()['delivery_time']
-except KeyError:
-    delivery_time = '09:00:00 +0000'
+if delivery_time == '':
+    delivery_time = datetime.datetime.utcnow().strftime('%H:%M:%S')\
+                    + ' +0000'
 
 logging.info('Parameters fetched successfully')
 
