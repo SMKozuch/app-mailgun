@@ -2,9 +2,11 @@ import codecs
 import requests
 import datetime
 import pandas as pd
+import logging
 from keboola import docker
 from mailgun_fun.mailgun import send_complex_message
 
+logging.info('Packages imported succesfully')
 
 ### Setting up the docker environment
 cfg = docker.Config('/data/')
@@ -21,6 +23,8 @@ try:
 except NameError:
     delivery_time = '09:00:00 -0000'
 
+logging.info('Parameters fetched successfully')
+
 scheduled_delivery_date = datetime.datetime.\
                             today().strftime('%a, %d %b %Y ') + delivery_time
 
@@ -32,6 +36,7 @@ html_file = codecs.open(path_html, 'r').read()
 mailing_list_path = '/data/in/tables/mailing_list.csv'
 mailing_list = pd.read_csv(filepath_or_buffer=mailing_list_path)
 
+logging.info('All done. Ready for mailgun.')
 
 for index, row in mailing_list.iterrows():
     html_body = html_file % row
