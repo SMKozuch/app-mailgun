@@ -10,7 +10,7 @@ logging.info('Packages imported succesfully')
 
 ### Setting up the docker environment
 cfg = docker.Config('/data/')
-#mailing_list_name = cfg.get_parameters()['mailing_list']
+mailing_list_name = cfg.get_parameters()['mailing_list_name']
 USER = cfg.get_parameters()['USER']
 PASSWORD = cfg.get_parameters()['#token']
 from_id = cfg.get_parameters()['from_id']
@@ -21,7 +21,7 @@ url = cfg.get_parameters()['url']
 try:
     delivery_time = cfg.get_parameters()['delivery_time']
 except NameError:
-    delivery_time = '09:00:00 -0000'
+    delivery_time = '09:00:00 +0000'
 
 logging.info('Parameters fetched successfully')
 
@@ -33,7 +33,7 @@ path_html = '/data/in/files/' + html_name
 html_file = codecs.open(path_html, 'r').read()
 
 
-mailing_list_path = '/data/in/tables/mailing_list.csv'
+mailing_list_path = '/data/in/tables/' + mailing_list_name
 mailing_list = pd.read_csv(filepath_or_buffer=mailing_list_path)
 
 logging.info('All done. Ready for mailgun.')
