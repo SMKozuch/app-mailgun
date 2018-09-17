@@ -17,7 +17,7 @@ from_id = cfg.get_parameters()['from_id']
 subject = cfg.get_parameters()['subject']
 html_name = cfg.get_parameters()['html_body']
 url = cfg.get_parameters()['url']
-delivery_time = cfd.get_parameters()['delivery_time']
+delivery_time = cfg.get_parameters()['delivery_time']
 
 if delivery_time == '':
     delivery_time = datetime.datetime.utcnow().strftime('%H:%M:%S')\
