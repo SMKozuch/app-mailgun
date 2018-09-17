@@ -2,7 +2,7 @@ import codecs
 import requests
 import datetime
 import pandas as pd
-#from keboola import docker
+from keboola import docker
 from mailgun_fun.mailgun import send_complex_message
 
 
@@ -26,7 +26,7 @@ scheduled_delivery_date = datetime.datetime.\
 
 
 path_html = '/data/in/files/' + html_name
-html_file = codecs.open(path, 'r').read()
+html_file = codecs.open(path_html, 'r').read()
 
 
 mailing_list_path = '/data/in/tables/' + mailing_list_name
@@ -41,6 +41,9 @@ for index, row in mailing_list.iterrows():
                                        from_id, 
                                        subject,
                                        html_body,
+                                       url,
+                                       USER,
+                                       PASSWORD,
                                        scheduled_delivery_date)
 
     if send_status.ok:

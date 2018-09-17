@@ -1,3 +1,4 @@
+import os
 import requests
 
 
@@ -5,8 +6,11 @@ import requests
 def send_complex_message(to_id, 
                         from_id, 
                         subject, 
-                        html_body,
-                        delivery_date="Mon, 01 Jan 2018 09:00:00 -0000", 
+                        html_body, 
+                        live_url,
+                        username,
+                        password,
+                        delivery_date="Mon, 01 Jan 2018 09:00:00 -0000",
                         attachments=None):
     '''
     to, from_id, subject, and html_body should be self explanatory.
@@ -32,6 +36,6 @@ def send_complex_message(to_id,
             count = count + 1
 
     return requests.post(live_url, 
-        auth=(USER, PASSWORD),
+        auth=(username, password),
         files=files,
         data=data)
