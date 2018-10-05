@@ -54,7 +54,8 @@ for index, row in mailing_list.iterrows():
                                        url,
                                        USER,
                                        PASSWORD,
-                                       scheduled_delivery_date)
+                                       scheduled_delivery_date,
+                                       attachments=att)
 
     if send_status.ok:
         print('Mail to %(email)s has been sent' % row)
