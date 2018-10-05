@@ -31,11 +31,13 @@ def send_complex_message(to_id,
         files = {}
         count = 0
         for attachment in attachments:
-            with open(attachment, 'rb') as f:
-                files['attachment['+str(count)+']'] = (os.path.basename(attachment), f.read())    
+            path = './in/files/' + attachment
+            with open(path, 'rb') as f:
+                files['attachment['+str(count)+']'] = (os.path.basename(path), f.read())    
             count = count + 1
 
     return requests.post(live_url, 
         auth=(username, password),
         files=files,
         data=data)
+

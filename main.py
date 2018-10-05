@@ -19,6 +19,11 @@ html_name = cfg.get_parameters()['html_body']
 url = cfg.get_parameters()['url']
 delivery_time = cfg.get_parameters()['delivery_time']
 
+try:
+    att = cfg.get_parameters()['attachments']
+except:
+    att = None
+
 if delivery_time == '':
     delivery_time = datetime.datetime.utcnow().strftime('%H:%M:%S')\
                     + ' +0000'
