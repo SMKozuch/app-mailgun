@@ -22,4 +22,4 @@ Mailgun component takes the following parameters as inputs.
 
 
 ### Output
-HTML response, whether the operation was successful or not. You can use Mailgun Logs component to fetch logs for sent emails.
+Information whether an email to specified email address was sent or not.

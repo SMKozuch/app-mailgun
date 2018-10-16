@@ -117,3 +117,4 @@ for index, row in mailing_list.iterrows():
                         refer to Mailgun dashboard for more information.""" % row)
 
 logging.info("Script finished.")
+sys.exit(0)
