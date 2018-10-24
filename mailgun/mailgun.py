@@ -40,4 +40,3 @@ def send_complex_message(to_id,
         auth=(username, password),
         files=files,
         data=data)
-

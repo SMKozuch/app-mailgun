@@ -2,3 +2,5 @@
 /data
 *.html
 *.json
+config.json
+test.py
