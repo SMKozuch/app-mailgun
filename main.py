@@ -45,10 +45,29 @@ cfg = docker.Config('/data/')
 params = cfg.get_parameters()
 user = params['user']
 password = params['#password']
+from_name = params['from_name']
+domain = params['domain']
+delivery_time = params['scheduled_delivery']
+attachments = params['attachments']
+
+if re.fullmatch(r'([0|1][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9] (\+|\-)([0|1][0-9]{3})', 
+    delivery_time):
+    scheduled_delivery = datetime.datetime\
+                            .today().strftime('%a, %d %b %Y ')\
+                             + delivery_time
+    logging.info("Delivery scheduled for %s" % scheduled_delivery)
+else:
+    scheduled_delivery = datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S') + ' +0000'
+    msg1 = "Delivery time was inputted wrong. %s is unsupported." % delivery_time
+    msg2 = "Message will be delivered on %s" % scheduled_delivery
+    logging.warn(" ".join([msg1, msg2]))
+
+
 
 logging.debug("Parameters are: " + str(params))
 logging.info("Successfully fetched all parameters.")
 
+### Tables congig
 cfg = docker.Config('/data/')
 in_tables = cfg.get_input_tables()
 out_tables = cfg.get_expected_output_tables()
