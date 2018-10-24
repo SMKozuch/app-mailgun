@@ -16,9 +16,9 @@ def delivery_time_check(delivery_time):
                                 + delivery_time
         logging.info("Delivery scheduled for %s" % scheduled_delivery)
     else:
-        scheduled_delivery = datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S') + ' +0000'
+        scheduled_delivery = None
         msg1 = "Delivery time was inputted wrong. %s is unsupported." % delivery_time
-        msg2 = "Message will be delivered on %s" % scheduled_delivery
+        msg2 = "Message will be delivered straightaway."
         logging.warn(" ".join([msg1, msg2]))
     
     return scheduled_delivery

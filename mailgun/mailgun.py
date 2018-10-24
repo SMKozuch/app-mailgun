@@ -19,19 +19,24 @@ def send_complex_message(to_id,
     ['/tmp/tmp5paoks/image001.png','/tmp/tmp5paoks/test.txt']
     '''
 
-
-    data={"from": from_id,
-          "to": [to_id, ""],
-          "subject": subject,
-          "html": html_body,
-          "o:deliverytime": delivery_date}
+    if delivery_date:
+        data={"from": from_id,
+            "to": [to_id, ""],
+            "subject": subject,
+            "html": html_body,
+            "o:deliverytime": delivery_date}
+    else:
+        data={"from": from_id,
+            "to": [to_id, ""],
+            "subject": subject,
+            "html": html_body}
 
     files = None      
     if attachments:
         files = {}
         count = 0
         for attachment in attachments:
-            path = './in/files/' + attachment
+            path = '/data/in/files/' + attachment
             with open(path, 'rb') as f:
                 files['attachment['+str(count)+']'] = (os.path.basename(path), f.read())    
             count = count + 1
