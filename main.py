@@ -43,5 +43,14 @@ logger.removeHandler(logger.handlers[0])
 ### Access the supplied rules
 cfg = docker.Config('/data/')
 params = cfg.get_parameters()
+user = params['user']
+password = params['#password']
 
+logging.debug("Parameters are: " + str(params))
 logging.info("Successfully fetched all parameters.")
+
+cfg = docker.Config('/data/')
+in_tables = cfg.get_input_tables()
+out_tables = cfg.get_expected_output_tables()
+logging.info("IN tables mapped: "+str(in_tables))
+logging.info("OUT tables mapped: "+str(out_tables))
