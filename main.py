@@ -11,6 +11,7 @@ import logging_gelf.handlers
 import logging_gelf.formatters
 from keboola import docker
 from mailgun.mailgun import send_complex_message
+from mailgun.delivery_check import delivery_time_check
 
 
 
@@ -47,22 +48,6 @@ user = params['user']
 password = params['#password']
 from_name = params['from_name']
 domain = params['domain']
-delivery_time = params['scheduled_delivery']
-attachments = params['attachments']
-
-if re.fullmatch(r'([0|1][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9] (\+|\-)([0|1][0-9]{3})', 
-    delivery_time):
-    scheduled_delivery = datetime.datetime\
-                            .today().strftime('%a, %d %b %Y ')\
-                             + delivery_time
-    logging.info("Delivery scheduled for %s" % scheduled_delivery)
-else:
-    scheduled_delivery = datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S') + ' +0000'
-    msg1 = "Delivery time was inputted wrong. %s is unsupported." % delivery_time
-    msg2 = "Message will be delivered on %s" % scheduled_delivery
-    logging.warn(" ".join([msg1, msg2]))
-
-
 
 logging.debug("Parameters are: " + str(params))
 logging.info("Successfully fetched all parameters.")
@@ -73,3 +58,25 @@ in_tables = cfg.get_input_tables()
 out_tables = cfg.get_expected_output_tables()
 logging.info("IN tables mapped: "+str(in_tables))
 logging.info("OUT tables mapped: "+str(out_tables))
+
+if len(in_tables) > 1:
+    logging.error("Please use only one table as input table.")
+    sys.exit(1)
+elif len(in_tables) == 0:
+    logging.error("No input table was inputted. Please specify a table.")
+    sys.exit(1)
+else:
+    pass
+
+mailing_list = pd.read_csv(in_tables[0]['full_path'])
+col_spec = set(["email", "name", "html_file", "attachments", "delivery"])
+
+col_boolean = col_spec != set(list(mailing_list))
+
+if col_boolean:
+    msg1 = "Input table does not contain all the necessary columns."
+    msg2 = "Missing columns are: %s." % str(col_spec.difference(set(list(mailing_list))))
+    msg3 = "Please see documentation for more information."
+    logging.error(" ".join([msg1, msg2, msg3]))
+    sys.exit(1)
+
