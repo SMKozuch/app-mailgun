@@ -1,6 +1,7 @@
 /vendor
 /data
 *.html
-*.json
 config.json
 test.py
+/logs
+/.vscode

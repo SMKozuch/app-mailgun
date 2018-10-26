@@ -92,12 +92,14 @@ def attachment_check(attachment_string, silent=False):
     attachments = [att.strip() for att in attachment_string.split(',')]
 
     for att in attachments:
-        if att not in os.listdir(DEFAULT_FILE_INPUT):
+        if att == '':
+            attachments.remove(att)
+        elif att not in os.listdir(DEFAULT_FILE_INPUT) and att != '':
             msg1 = "File %s is not in the directory." % att
             msg2 = "List of available files is: %s" % os.listdir(DEFAULT_FILE_INPUT)
             logging.error(" ".join([msg1, msg2]))
             sys.exit(1)
-    
+
     if silent:
         pass
     else:
@@ -116,7 +118,7 @@ def html_check(file):
     else:
         try:
             codecs.open('/data/in/files/' + file, 'r').read()
-            logging.debug("File %s read successfully" % file)
+            logging.info("File %s read successfully" % file)
         except:
             logging.error("Could not read file %s." % file)
             sys.exit(2)
@@ -145,6 +147,7 @@ def main():
         html_check(html)
         logging.info("Checking attachments %s." % att)
         attachment_check(att)
+        logging.info("Attachments checked.")
 
     for _, row in mailing_list.iterrows():
         ### Recipient variables

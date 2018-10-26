@@ -1,0 +1,42 @@
+{
+    "title": "Parameters",
+    "type": "object",
+    "required": [
+      "user",
+      "#password",
+      "domain",
+      "from_name"
+    ],
+    "properties": {
+      "user": {
+        "title": "Username",
+        "type": "string",
+        "description": "Username for Mailgun. If API token is used, insert api.",
+        "minLength": 1,
+        "default": "api",
+        "propertyOrder": 1
+      },
+      "#password": {
+        "type": "string",
+        "format": "password",
+        "title": "Token",
+        "description": "Token or password for Mailgun API.",
+        "default": "",
+        "propertyOrder": 2
+      },
+      "domain": {
+        "type": "string",
+        "title": "Domain.",
+        "description": "Domain used in Mailgun, e.g. 'keboola.com'.",
+        "default": "",
+        "propertyOrder": 3
+      },
+      "from_name": {
+        "type": "string",
+        "title": "From.",
+        "description": "Who should be names as a sender, e.g. John Doe.",
+        "default": "",
+        "propertyOrder": 4
+      }
+    }
+  }
