@@ -140,6 +140,11 @@ def main():
     from_id = from_name + ' <postmaster@%s>' % domain
     domain_url = 'https://api.mailgun.net/v3/%s/messages' % domain
     
+    ### ANTI-SPAM 
+    ### if any of the attachments or html bodies is not present
+    ### an error will be thrown. This is done before any email
+    ### is sent, so that if somebody tries to run the application
+    ### again, the person in mailing list won't be spammed.
     for _, row in mailing_list.iterrows():
         html = row['html_file']
         att = row['attachments']
