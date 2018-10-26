@@ -3,7 +3,7 @@
 Mailgun component is able to send an email via Mailgun API. 
 Basic requirements are:
   * Mailgun account
-  * registered domain (if emails are to be sent outside of sandbox; see Mailgun help)
+  * registered domain (if emails are to be sent outside of sandbox accepted; see Mailgun help)
 
 This component takes as input a table of email addresses and names, to which an email is sent. In the table, other attributes can be added, which can then be used to fill in the html body (e.g. date of birth, etc.). **The table needs to contain columns *email* and *name*, that are used to create recipient ID.**
 

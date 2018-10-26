@@ -1,6 +1,7 @@
 FROM quay.io/keboola/docker-custom-python:latest
 
-RUN pip install --disable-pip-version-check --no-cache-dir logging_gelf
+COPY requirements.txt requirements.txt
+RUN pip install --disable-pip-version-check --no-cache-dir -r requirements.txt
 
 #COPY /data/ /data/
 

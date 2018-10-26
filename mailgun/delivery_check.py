@@ -15,6 +15,9 @@ def delivery_time_check(delivery_time):
                                 .today().strftime('%a, %d %b %Y ')\
                                 + delivery_time
         logging.info("Delivery scheduled for %s" % scheduled_delivery)
+    elif delivery_time == '':
+        scheduled_delivery = None
+        logging.info("Delivery time was not inputted. Message will be delivered ASAP.")
     else:
         scheduled_delivery = None
         msg1 = "Delivery time was inputted wrong. %s is unsupported." % delivery_time
