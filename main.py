@@ -170,11 +170,16 @@ def main():
                                     delivery,
                                     attachments)
 
-        if msg.ok:
+        if msg.status_code == 200:
             logging.info("An email to %(email)s was sent successfully." % row)
+        elif msg.status_code == 401:
+            msg1 = "Logging in to Mailgun failed."
+            msg2 = "Attempt failed with %s %s" % (msg.status_code, msg.reason)
+            logging.error(" ".split([msg1, msg2]))
+            sys.exit(1)
         else:
-            logging.warn("An email to %(email)s was not sent. Please check Mailgun logs." % row)
-
+            msg1 = "Could not send a message. Process exited"
+            msg2 = "with %s %s" % (msg.status_code, msg.reason)
 
 if __name__=='__main__':
     main()
