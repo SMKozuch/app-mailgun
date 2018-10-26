@@ -10,7 +10,7 @@ def delivery_time_check(delivery_time):
     """
 
     if re.fullmatch(r'([0|1][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9] (\+|\-)([0|1][0-9]{3})', 
-    delivery_time):
+    str(delivery_time)):
         scheduled_delivery = datetime.datetime\
                                 .today().strftime('%a, %d %b %Y ')\
                                 + delivery_time

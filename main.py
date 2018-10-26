@@ -27,7 +27,7 @@ from mailgun.delivery_check import delivery_time_check
 abspath = os.path.abspath(__file__)
 script_path = os.path.dirname(abspath)
 os.chdir(script_path)
-sys.tracebacklimit = 3
+sys.tracebacklimit = 0
 
 ### Logging
 logging.basicConfig(
@@ -35,7 +35,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)-8s : [line:%(lineno)3s] %(message)s',
     datefmt="%Y-%m-%d %H:%M:%S")
 
-"""
 logger = logging.getLogger()
 logging_gelf_handler = logging_gelf.handlers.GELFTCPSocketHandler(
     host=os.getenv('KBC_LOGGER_ADDR'),
@@ -46,8 +45,6 @@ logger.addHandler(logging_gelf_handler)
 
 # removes the initial stdout logging
 logger.removeHandler(logger.handlers[0])
-"""
-
 
 ### Access the supplied rules
 cfg = docker.Config('/data/')
@@ -81,12 +78,16 @@ elif len(in_tables) == 0:
 else:
     pass
 
-def attachment_parsing(attachment_string):
+
+def attachment_check(attachment_string, silent=False):
     """
     Function to check attachments
     """
     if len(attachment_string) == 0:
-        return None
+        if silent:
+            pass
+        else:
+            return None
 
     attachments = [att.strip() for att in attachment_string.split(',')]
 
@@ -96,14 +97,35 @@ def attachment_parsing(attachment_string):
             msg2 = "List of available files is: %s" % os.listdir(DEFAULT_FILE_INPUT)
             logging.error(" ".join([msg1, msg2]))
             sys.exit(1)
-    return attachments
+    
+    if silent:
+        pass
+    else:
+        return attachments
 
+def html_check(file):
+    """
+    Dummy function that checks, whether html file is in dir.
+    """
+
+    if file not in os.listdir(DEFAULT_FILE_INPUT):
+        msg1 = "File %s is not in the directory." % file
+        msg2 = "List of available files is: %s" % os.listdir(DEFAULT_FILE_INPUT)
+        logging.error(" ".join([msg1, msg2]))
+        sys.exit(1)
+    else:
+        try:
+            codecs.open('/data/in/files/' + file, 'r').read()
+            logging.debug("File %s read successfully" % file)
+        except:
+            logging.error("Could not read file %s." % file)
+            sys.exit(2)
 
 def main():
     ### Making sure all columns are included
     mailing_list = pd.read_csv(in_tables[0]['full_path']).fillna("")
     col_spec = set(["email", "name", "html_file", "subject", "attachments", "delivery"])
-    col_boolean = col_spec != set(list(mailing_list))
+    col_boolean = len(col_spec.difference(set(list(mailing_list)))) != 0
 
     if col_boolean:
         msg1 = "Input table does not contain all the necessary columns."
@@ -115,13 +137,22 @@ def main():
     ### Mailgun variables
     from_id = from_name + ' <postmaster@%s>' % domain
     domain_url = 'https://api.mailgun.net/v3/%s/messages' % domain
+    
+    for _, row in mailing_list.iterrows():
+        html = row['html_file']
+        att = row['attachments']
+        logging.info("Checking html file %s." % html)
+        html_check(html)
+        logging.info("Checking attachments %s." % att)
+        attachment_check(att)
+
     for _, row in mailing_list.iterrows():
         ### Recipient variables
         to_id = '%(name)s <%(email)s>' % row
         html_path = DEFAULT_FILE_INPUT + row['html_file']
         html_body = codecs.open(html_path, 'r').read() % row
         delivery = delivery_time_check(row['delivery'])
-        attachments = attachment_parsing(row['attachments'])
+        attachments = attachment_check(row['attachments'])
 
         logging.debug("Sending message to %(email)s." % row)
 
