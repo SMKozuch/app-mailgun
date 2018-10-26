@@ -12,9 +12,9 @@ Mailgun component takes the following parameters and table as inputs.
 
 * **Username** - Mailgun username. If API key is used, fill in `api`. 
 * **Token** - Password or API key for Mailgun.
-* **Domain** - Domain, from which the mail should be sent. See [How to send mail](https://documentation.mailgun.com/en/latest/quickstart-sending.html#how-to-start-sending-email)
+* **Domain** - Domain, from which the mail should be sent. See [How to send mail](https://documentation.mailgun.com/en/latest/quickstart-sending.html#how-to-start-sending-email).
 * **From** - Specifiec in whose name should the mail be sent.
-* **Table** with records of emails, **with following columns**:
+* **Input Table** with records of emails. Each row will be sent as separate email, to separate address, name, body, etc. specified in the input table. Table **must include** following columns:
     * `email` - Email address to which an email will be sent.
     * `name` - Name of the person. Will be used in creating an email handle. Can be left blank.
     * `html_file` - Name of the file in KBC storage to be used as html body, in format `KBCID_filename.ext`, where `KBCID` is ID of the file in KBC storage, `filename.ext` is the name and extension of given file.
