@@ -125,7 +125,7 @@ def html_check(file):
 
 def main():
     ### Making sure all columns are included
-    mailing_list = pd.read_csv(in_tables[0]['full_path']).fillna("")
+    mailing_list = pd.read_csv(in_tables[0]['full_path'], dtype=str).fillna("")
     col_spec = set(["email", "name", "html_file", "subject", "attachments", "delivery"])
     col_boolean = len(col_spec.difference(set(list(mailing_list)))) != 0
 
@@ -158,7 +158,7 @@ def main():
         ### Recipient variables
         to_id = '%(name)s <%(email)s>' % row
         html_path = DEFAULT_FILE_INPUT + row['html_file']
-        html_body = codecs.open(html_path, 'r').read() % row
+        html_body = codecs.open(html_path, 'r').read() % (row)
         delivery = delivery_time_check(row['delivery'])
         attachments = attachment_check(row['attachments'])
 
